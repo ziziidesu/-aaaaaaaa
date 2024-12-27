@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "aaatube",
   "version": "1.0.0",
   "description": "A YouTube Stream URL Redirector",
