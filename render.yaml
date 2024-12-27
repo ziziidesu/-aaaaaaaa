@@ -9,5 +9,4 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    # 必要であればポート番号を指定（Render では通常 10000 番ポートを使う）
-    port: 10000
+  
