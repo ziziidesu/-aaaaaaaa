@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Stream Video Player</title>
+    <title>ああああtube</title>
 </head>
 <body>
-    <h1>YouTube Stream Video Player</h1>
+    <h1>ああああtube</h1>
     <form id="urlForm">
-        <label for="url">YouTube URL:</label>
+        <label for="url">YouTubeのURLを入れて⇛</label>
         <input type="text" id="url" name="url" required>
-        <button type="submit">Get Stream URL</button>
+        <button type="submit">動画を開くよ！</button>
     </form>
     <p id="error" style="color: red;"></p>
     <div id="videoContainer" style="display: none;">
-        <h3>Streamed Video:</h3>
+        <h3>動画だよー！:</h3>
         <video id="videoPlayer" controls width="640" height="360">
-            Your browser does not support the video tag.
+            君のブラウザではできないようだね！
         </video>
     </div>
 
@@ -51,22 +51,39 @@
                     throw new Error('No video ID found in the URL.');
                 }
 
-                // APIリクエストを送信
-                const apiUrl = `https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`;
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch the stream URL.');
+                // APIリクエストのリスト
+                const apis = [
+                    `https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`,
+                    `https://huhuhuhuhuhuwatadedenk.easterndns.com/api/${videoId}?token=wakameoishi`
+                ];
+
+                let streamUrl = null;
+
+                // APIを順番に試す
+                for (const apiUrl of apis) {
+                    try {
+                        const response = await fetch(apiUrl);
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.stream_url) {
+                                streamUrl = data.stream_url;
+                                break; // 成功したらループを抜ける
+                            }
+                        }
+                    } catch (apiError) {
+                        console.warn(`API failed: ${apiUrl}`, apiError);
+                    }
                 }
 
-                const data = await response.json();
-
-                // stream_urlが存在するか確認して動画を表示
-                if (data.stream_url) {
-                    videoPlayer.src = data.stream_url;
-                    videoContainer.style.display = 'block';
-                } else {
-                    throw new Error('Stream URL not found in the response.');
+                // stream_urlが見つからない場合エラーを表示
+                if (!streamUrl) {
+                    throw new Error('Failed to retrieve the stream URL from all APIs.');
                 }
+
+                // 動画を表示
+                videoPlayer.src = streamUrl;
+                videoContainer.style.display = 'block';
+
             } catch (error) {
                 errorElement.textContent = error.message;
             }
