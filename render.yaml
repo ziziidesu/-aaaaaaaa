@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-video-streamer
+    name: aaaatube
     env: node
     plan: free
     buildCommand: npm install
