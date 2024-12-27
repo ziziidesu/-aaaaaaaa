@@ -3,28 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Stream URL Converter</title>
+    <title>YouTube Stream Video Player</title>
 </head>
 <body>
-    <h1>YouTube Stream URL Converter</h1>
+    <h1>YouTube Stream Video Player</h1>
     <form id="urlForm">
         <label for="url">YouTube URL:</label>
         <input type="text" id="url" name="url" required>
-        <button type="submit">Convert</button>
+        <button type="submit">Get Stream URL</button>
     </form>
-    <p id="result" style="color: green;"></p>
     <p id="error" style="color: red;"></p>
+    <div id="videoContainer" style="display: none;">
+        <h3>Streamed Video:</h3>
+        <video id="videoPlayer" controls width="640" height="360">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <script>
         document.getElementById('urlForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const urlInput = document.getElementById('url').value;
-            const resultElement = document.getElementById('result');
             const errorElement = document.getElementById('error');
+            const videoContainer = document.getElementById('videoContainer');
+            const videoPlayer = document.getElementById('videoPlayer');
 
-            // 結果メッセージをリセット
-            resultElement.textContent = '';
+            // リセット
             errorElement.textContent = '';
+            videoContainer.style.display = 'none';
+            videoPlayer.src = '';
 
             try {
                 const url = new URL(urlInput);
@@ -53,9 +60,10 @@
 
                 const data = await response.json();
 
-                // stream_urlが存在するか確認して表示
+                // stream_urlが存在するか確認して動画を表示
                 if (data.stream_url) {
-                    resultElement.textContent = `Stream URL: ${data.stream_url}`;
+                    videoPlayer.src = data.stream_url;
+                    videoContainer.style.display = 'block';
                 } else {
                     throw new Error('Stream URL not found in the response.');
                 }
