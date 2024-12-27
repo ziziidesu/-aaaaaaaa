@@ -1,0 +1,16 @@
+{
+  "name": "my-video-streamer",
+  "version": "1.0.0",
+  "description": "A YouTube Stream URL Redirector",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.2.10"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
