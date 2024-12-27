@@ -1,5 +1,5 @@
-const express = require('express');
-const fetch = require('node-fetch'); // APIを取得するために使用
+import express from 'express';
+import fetch from 'node-fetch';
 const app = express();
 const port = process.env.PORT || 3000;
 
