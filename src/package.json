@@ -1,5 +1,5 @@
 {
-  "name": "my-video-streamer",
+  "name": "aaatube",
   "version": "1.0.0",
   "description": "A YouTube Stream URL Redirector",
   "main": "server.js",
