@@ -3,90 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ああああtube</title>
+    <title>Video Redirect</title>
 </head>
 <body>
-    <h1>ああああtube</h1>
-    <form id="urlForm">
-        <label for="url">YouTubeのURLを入れて⇛</label>
-        <input type="text" id="url" name="url" required>
-        <button type="submit">動画を開くよ！</button>
+    <h1>動画リンクを入力してください</h1>
+    <form id="video-form">
+        <label for="video-link">動画リンク:</label>
+        <input type="text" id="video-link" name="video-link" placeholder="動画のURLを入力" required>
+        <button type="submit">送信</button>
     </form>
-    <p id="error" style="color: red;"></p>
-    <div id="videoContainer" style="display: none;">
-        <h3>動画だよー！:</h3>
-        <video id="videoPlayer" controls width="640" height="360">
-            君のブラウザではできないようだね！
-        </video>
-    </div>
 
     <script>
-        document.getElementById('urlForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-            const urlInput = document.getElementById('url').value;
-            const errorElement = document.getElementById('error');
-            const videoContainer = document.getElementById('videoContainer');
-            const videoPlayer = document.getElementById('videoPlayer');
-
-            // リセット
-            errorElement.textContent = '';
-            videoContainer.style.display = 'none';
-            videoPlayer.src = '';
-
-            try {
-                const url = new URL(urlInput);
-
-                // YouTube URLかどうかを確認
-                if (url.hostname !== 'www.youtube.com' && url.hostname !== 'youtube.com' && url.hostname !== 'youtu.be') {
-                    throw new Error('This is not a valid YouTube URL.');
-                }
-
-                // 動画IDを取得
-                let videoId = '';
-                if (url.hostname === 'youtu.be') {
-                    videoId = url.pathname.slice(1); // youtu.be/VIDEO_ID の形式
-                } else if (url.searchParams.has('v')) {
-                    videoId = url.searchParams.get('v'); // youtube.com/watch?v=VIDEO_ID の形式
-                } else {
-                    throw new Error('No video ID found in the URL.');
-                }
-
-                // APIリクエストのリスト
-                const apis = [
-                    `https://watawatawata.glitch.me/api/${videoId}?token=wakameoishi`,
-                    `https://huhuhuhuhuhuwatadedenk.easterndns.com/api/${videoId}?token=wakameoishi`
-                ];
-
-                let streamUrl = null;
-
-                // APIを順番に試す
-                for (const apiUrl of apis) {
-                    try {
-                        const response = await fetch(apiUrl);
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.stream_url) {
-                                streamUrl = data.stream_url;
-                                break; // 成功したらループを抜ける
-                            }
-                        }
-                    } catch (apiError) {
-                        console.warn(`API failed: ${apiUrl}`, apiError);
-                    }
-                }
-
-                // stream_urlが見つからない場合エラーを表示
-                if (!streamUrl) {
-                    throw new Error('Failed to retrieve the stream URL from all APIs.');
-                }
-
-                // 動画を表示
-                videoPlayer.src = streamUrl;
-                videoContainer.style.display = 'block';
-
-            } catch (error) {
-                errorElement.textContent = error.message;
-            }
+        document.getElementById('video-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const videoLink = document.getElementById('video-link').value;
+            const videoId = new URL(videoLink).pathname.split('/').pop(); // 動画IDを抽出
+            window.location.href = `/video/${videoId}`; // リダイレクト
         });
     </script>
 </body>
