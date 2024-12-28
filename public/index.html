@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Stream</title>
+    <title>Video Player</title>
 </head>
 <body>
-    <h1>Stream YouTube Video</h1>
-    <form id="videoForm">
-        <label for="videoId">YouTube Video ID:</label>
-        <input type="text" id="videoId" name="videoId" required>
-        <button type="submit">Stream</button>
-    </form>
-    <div id="videoContainer" style="margin-top: 20px;"></div>
+    <h1>Stream Video</h1>
+    <input type="text" id="videoUrl" placeholder="Enter YouTube URL">
+    <button id="loadVideo">Load Video</button>
+
+    <div id="videoContainer">
+        <video id="videoPlayer" controls style="width: 100%; max-width: 600px;">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <script>
-        document.getElementById('videoForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const videoId = document.getElementById('videoId').value;
-            const response = await fetch(`/stream?videoId=${videoId}`);
-            const html = await response.text();
-            document.getElementById('videoContainer').innerHTML = html;
+        document.getElementById('loadVideo').addEventListener('click', async () => {
+            const videoUrl = document.getElementById('videoUrl').value;
+            
+            // サーバーにPOSTリクエストを送ってストリームURLを取得
+            const response = await fetch(`/getStreamUrl?videoUrl=${encodeURIComponent(videoUrl)}`, {
+                method: 'POST',
+            });
+
+            const data = await response.json();
+
+            if (data.streamUrl) {
+                // ストリームURLが取得できたら、videoPlayerのソースを設定
+                document.getElementById('videoPlayer').src = data.streamUrl;
+            } else {
+                alert('Error: Could not fetch stream URL');
+            }
         });
     </script>
 </body>
