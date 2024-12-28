@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Redirect</title>
+    <title>YouTube Stream</title>
 </head>
 <body>
-    <h1>動画リンクを入力してください</h1>
-    <form id="video-form">
-        <label for="video-link">動画リンク:</label>
-        <input type="text" id="video-link" name="video-link" placeholder="動画のURLを入力" required>
-        <button type="submit">送信</button>
+    <h1>Stream YouTube Video</h1>
+    <form id="videoForm">
+        <label for="videoId">YouTube Video ID:</label>
+        <input type="text" id="videoId" name="videoId" required>
+        <button type="submit">Stream</button>
     </form>
+    <div id="videoContainer" style="margin-top: 20px;"></div>
 
     <script>
-        document.getElementById('video-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const videoLink = document.getElementById('video-link').value;
-            const videoId = new URL(videoLink).pathname.split('/').pop(); // 動画IDを抽出
-            window.location.href = `/video/${videoId}`; // リダイレクト
+        document.getElementById('videoForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const videoId = document.getElementById('videoId').value;
+            const response = await fetch(`/stream?videoId=${videoId}`);
+            const html = await response.text();
+            document.getElementById('videoContainer').innerHTML = html;
         });
     </script>
 </body>
