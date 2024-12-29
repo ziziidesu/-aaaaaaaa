@@ -1,8 +1,7 @@
 services:
   - type: web  # 静的サイトでも 'web' を使用
-    name: aaaatube  # サービスの名前
+    name: aaatube  # サービスの名前
     env: static  # 静的サイト用の環境
     runtime: static  # ランタイムを静的に指定
-    staticPublishPath: /  # 公開パスの指定
+    staticPublishPath: .  # 公開するディレクトリを指定 (カレントディレクトリの場合は ".")
     buildCommand: ""  # 静的サイトなのでビルドコマンドは不要
-    publishPath: .  # 現在のディレクトリを公開
