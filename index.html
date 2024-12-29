@@ -3,37 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player</title>
+    <title>YouTube Stream</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Stream Video</h1>
-    <input type="text" id="videoUrl" placeholder="Enter YouTube URL">
-    <button id="loadVideo">Load Video</button>
+    <h1>YouTube Stream Player</h1>
+    <input type="text" id="videoIdInput" placeholder="Enter YouTube Video ID">
+    <button id="playButton">Play</button>
+    <video id="videoPlayer" controls autoplay width="640" height="360"></video>
 
-    <div id="videoContainer">
-        <video id="videoPlayer" controls style="width: 100%; max-width: 600px;">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <script>
-        document.getElementById('loadVideo').addEventListener('click', async () => {
-            const videoUrl = document.getElementById('videoUrl').value;
-            
-            // サーバーにPOSTリクエストを送ってストリームURLを取得
-            const response = await fetch(`/getStreamUrl?videoUrl=${encodeURIComponent(videoUrl)}`, {
-                method: 'POST',
-            });
-
-            const data = await response.json();
-
-            if (data.streamUrl) {
-                // ストリームURLが取得できたら、videoPlayerのソースを設定
-                document.getElementById('videoPlayer').src = data.streamUrl;
-            } else {
-                alert('Error: Could not fetch stream URL');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
