@@ -1,7 +1,8 @@
 services:
-  - type: static_site  # 静的サイトとして正しいタイプ
-    name: YouTubeStreamPlayer  # サービスの名前
-    env: static  # 環境は静的サイト用
+  - type: web  # 静的サイトでも 'web' を使用
+    name: aaaatube  # サービスの名前
+    env: static  # 静的サイト用の環境
+    runtime: static  # ランタイムを静的に指定
     staticPublishPath: /  # 公開パスの指定
-    buildCommand: ""  # ビルドコマンドは不要
+    buildCommand: ""  # 静的サイトなのでビルドコマンドは不要
     publishPath: .  # 現在のディレクトリを公開
