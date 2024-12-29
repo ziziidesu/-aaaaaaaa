@@ -1,12 +1,7 @@
 services:
-  - type: web
-    name: aaaatube
-    env: node
-    plan: free
-    buildCommand: npm install
-    startCommand: node src/server.js
-    branch: main
-    envVars:
-      - key: NODE_ENV
-        value: production
-  
+  - type: static  # 静的サイトとしてデプロイ
+    name: YouTubeStreamPlayer  # サービスの名前
+    env: static  # 環境は静的サイト用
+    staticPublishPath: /  # ルートディレクトリを公開
+    buildCommand: ""  # 静的サイトなのでビルドコマンドは不要
+    publishPath: .  # 現在のディレクトリを公開
